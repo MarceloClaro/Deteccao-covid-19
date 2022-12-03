@@ -26,8 +26,8 @@ import tensorflow as tf
 def main():
 	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax"""
 	html_templ = """
-	<div style="background-color:blue;padding:10px;">
-	<h1 style="color:yellow">Ferramenta de detecção de Covid-19</h1>
+	<div style="background-color:red;padding:10px;">
+	<h1 style="color:yellow">Detecção de Covid-19</h1>
 	</div>
 	"""
 

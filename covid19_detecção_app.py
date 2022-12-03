@@ -9,7 +9,7 @@ Modelo CNN: Covid19_CNN_Classifier.h5
 
 # Pacotes principais para a aplicação web e para a detecção de COVID-19 em imagens de raio-X do tórax 
 import streamlit as st # Interface web	
-st.set_page_config(page_title="Ferramenta de Detecção Covid19", page_icon="covid19.jpeg", layout='centered', initial_sidebar_state='auto') # Configurações da página web 
+st.set_page_config(page_title="Ferramenta de Detecção Covid19", page_icon="covid19.jpg", layout='centered', initial_sidebar_state='auto') 
 
 import os # Para manipulação de arquivos e diretórios 
 import time # Para manipulação de tempo 
@@ -26,7 +26,7 @@ def main(): # Função principal da aplicação web
 	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax""" 
 	html_templ = """  
 	<div style="background-color:blue;padding:10px;"> 
-	<h1 style="color:yellow">Ferramenta de detecção de Covid-19</h1> # Título da interface web 
+	<h1 style="color:yellow">Ferramenta de detecção de Covid-19</h1>
 	</div> 
 	""" 
 

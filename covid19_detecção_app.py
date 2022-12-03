@@ -23,19 +23,19 @@ import numpy as np # Para manipulação de arrays
 import tensorflow as tf # Para manipulação de redes neurais  
 
 def main(): # Função principal da aplicação web 
-	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax""" # Docstring da função principal da aplicação web 
-	html_templ = """  # Código HTML para a interface web  
-	<div style="background-color:blue;padding:10px;"> # Cor de fundo da interface web 
+	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax""" 
+	html_templ = """  
+	<div style="background-color:blue;padding:10px;"> 
 	<h1 style="color:yellow">Ferramenta de detecção de Covid-19</h1> # Título da interface web 
-	</div> # Cor de fundo da interface web 
-	""" # Código HTML para a interface web
+	</div> 
+	""" 
 
-	st.markdown(html_templ,unsafe_allow_html=True) # Interface web 
-	st.write("Uma proposta simples para o diagnóstico de Covid-19 com tecnologia Deep Learning e Streamlit") # Interface web 
+	st.markdown(html_templ,unsafe_allow_html=True)
+	st.write("Uma proposta simples para o diagnóstico de Covid-19 com tecnologia Deep Learning e Streamlit") 
 
-	st.sidebar.image("covid19.jpeg",width=300) # Interface web 
+	st.sidebar.image("covid19.jpeg",width=300) 
 
-	image_file = st.sidebar.file_uploader("Carregue uma imagem de raio-X (jpg, png ou jpeg)",type=['jpg','png','jpeg']) # Interface web 
+	image_file = st.sidebar.file_uploader("Carregue uma imagem de raio-X (jpg, png ou jpeg)",type=['jpg','png','jpeg']) 
 
 	if image_file is not None: # Se o usuário carregar uma imagem de raio-X do tórax 
 		our_image = Image.open(image_file) # Carregue a imagem de raio-X do tórax 

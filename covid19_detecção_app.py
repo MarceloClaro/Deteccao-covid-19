@@ -1,9 +1,9 @@
 
 """
-Created on Sun Jun 14 18:31:28 2020
-@author: Rosario Moscato
-Required Packages: streamlit opencv-python Pillow numpy tensorflow
-CNN Model: Covid19_CNN_Classifier.h5
+Criado em Sab 02 de dezembro 18:31:28 2022
+@autor: Marcelo Claro
+Pacotes necessários: streamlit opencv-python Pillow numpy tensorflow
+Modelo CNN: Covid19_CNN_Classifier.h5
 """
 
 
@@ -24,27 +24,27 @@ import tensorflow as tf
 
 
 def main():
-	"""Simple Tool for Covid-19 Detection from Chest X-Ray"""
+	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax"""
 	html_templ = """
 	<div style="background-color:blue;padding:10px;">
-	<h1 style="color:yellow">Covid-19 Detection Tool</h1>
+	<h1 style="color:yellow">Ferramenta de detecção de Covid-19</h1>
 	</div>
 	"""
 
 	st.markdown(html_templ,unsafe_allow_html=True)
-	st.write("A simple proposal for Covid-19 Diagnosis powered by Deep Learning and Streamlit")
+	st.write("Uma proposta simples para o diagnóstico de Covid-19 com tecnologia Deep Learning e Streamlit")
 
 	st.sidebar.image("covid19.jpg",width=300)
 
-	image_file = st.sidebar.file_uploader("Upload an X-Ray Image (jpg, png or jpeg)",type=['jpg','png','jpeg'])
+	image_file = st.sidebar.file_uploader("Carregar uma imagem de raio-X (jpg, png or jpeg)",type=['jpg','png','jpeg'])
 
 	if image_file is not None:
 		our_image = Image.open(image_file)
 
-		if st.sidebar.button("Image Preview"):
+		if st.sidebar.button("Pré-visualização de imagem"):
 			st.sidebar.image(our_image,width=300)
 
-		activities = ["Image Enhancement","Diagnosis", "Disclaimer and Info"]
+		activities = ["Aperfeiçoamento de imagem","Diagnóstico","Isenção de responsabilidade e informações"]
 		choice = st.sidebar.selectbox("Select Activty",activities)
 
 		if choice == 'Image Enhancement':

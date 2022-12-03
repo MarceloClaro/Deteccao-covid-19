@@ -1,118 +1,124 @@
 
 """
-Criado em 03/12/2022
-@autor: Marcelo Claro
-Pacotes Necessários: streamlit opencv-python Pillow numpy tensorflow
-Modelo CNN: Covid19_CNN_Classifier.h5
+Created on Sun Jun 14 18:31:28 2020
+@author: Rosario Moscato
+Required Packages: streamlit opencv-python Pillow numpy tensorflow
+CNN Model: Covid19_CNN_Classifier.h5
 """
 
 
-# Pacotes principais para a aplicação web e para a detecção de COVID-19 em imagens de raio-X do tórax 
-import streamlit as st # Interface web	
-st.set_page_config(page_title="Ferramenta de Detecção Covid19", page_icon="covid19.jpg", layout='centered', initial_sidebar_state='auto') 
+# Core Pkgs
+import streamlit as st
+st.set_page_config(page_title="Covid19 Detection Tool", page_icon="covid19.jpeg", layout='centered', initial_sidebar_state='auto')
 
-import os # Para manipulação de arquivos e diretórios 
-import time # Para manipulação de tempo 
+import os
+import time
 
-# Viz Pkgs # Para visualização de imagens 
-import cv2 # Para manipulação de imagens
-from PIL import Image,ImageEnhance # Para manipulação de imagens  
-import numpy as np # Para manipulação de arrays 
+# Viz Pkgs
+import cv2
+from PIL import Image,ImageEnhance
+import numpy as np 
 
-# AI Pkgs # Para detecção de COVID-19 em imagens de raio-X do tórax 
-import tensorflow as tf # Para manipulação de redes neurais  
+# AI Pkgs
+import tensorflow as tf
 
-def main(): # Função principal da aplicação web 
-	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax""" 
-	html_templ = """  
-	<div style="background-color:blue;padding:10px;"> 
-	<h1 style="color:yellow">Ferramenta de detecção de Covid-19</h1>
-	</div> 
-	""" 
+
+def main():
+	"""Simple Tool for Covid-19 Detection from Chest X-Ray"""
+	html_templ = """
+	<div style="background-color:blue;padding:10px;">
+	<h1 style="color:yellow">Covid-19 Detection Tool</h1>
+	</div>
+	"""
 
 	st.markdown(html_templ,unsafe_allow_html=True)
-	st.write("Uma proposta simples para o diagnóstico de Covid-19 com tecnologia Deep Learning e Streamlit") 
+	st.write("A simple proposal for Covid-19 Diagnosis powered by Deep Learning and Streamlit")
 
-	st.sidebar.image("covid19.jpeg",width=300) 
+	st.sidebar.image("covid19.jpg",width=300)
 
-	image_file = st.sidebar.file_uploader("Carregue uma imagem de raio-X (jpg, png ou jpeg)",type=['jpg','png','jpeg']) 
+	image_file = st.sidebar.file_uploader("Upload an X-Ray Image (jpg, png or jpeg)",type=['jpg','png','jpeg'])
 
-	if image_file is not None: 
-		our_image = Image.open(image_file) 
-		if st.sidebar.button("Pré-visualização de imagem"): 
-			st.sidebar.image(our_image,width=300)  
+	if image_file is not None:
+		our_image = Image.open(image_file)
 
-		activities = ["Aprimoramento de imagem","Diagnóstico", "Isenção de responsabilidade e informações"] # Opções da interface web 
-		choice = st.sidebar.selectbox("Selecione a atividade",activities) 
+		if st.sidebar.button("Image Preview"):
+			st.sidebar.image(our_image,width=300)
 
-		if choice == 'Image Enhancement': # Se o usuário selecionar a opção "Aprimoramento de imagem"
-			st.subheader("Melhoria de imagem") # Interface web	
+		activities = ["Image Enhancement","Diagnosis", "Disclaimer and Info"]
+		choice = st.sidebar.selectbox("Select Activty",activities)
 
-			enhance_type = st.sidebar.radio("Melhorar Tipo",["Original","Contraste","Brilho"]) # Interface web	
+		if choice == 'Image Enhancement':
+			st.subheader("Image Enhancement")
 
-			if enhance_type == 'Contrast': # Se o usuário selecionar a opção "Contraste" 
-				c_rate = st.slider("Contraste",0.5,5.0) # Interface web  
-				enhancer = ImageEnhance.Contrast(our_image) # Interface web
-				img_output = enhancer.enhance(c_rate) # Interface web
-				st.image(img_output,use_column_width=True) # Interface web
+			enhance_type = st.sidebar.radio("Enhance Type",["Original","Contrast","Brightness"])
+
+			if enhance_type == 'Contrast':
+				c_rate = st.slider("Contrast",0.5,5.0)
+				enhancer = ImageEnhance.Contrast(our_image)
+				img_output = enhancer.enhance(c_rate)
+				st.image(img_output,use_column_width=True)
 
 
-			elif enhance_type == 'Brightness': 	# Se o usuário selecionar a opção "Brilho"
-				c_rate = st.slider("Brilho",0.5,5.0) # Interface web 
-				enhancer = ImageEnhance.Brightness(our_image) 	# Interface web
-				img_output = enhancer.enhance(c_rate) # Interface web
-				st.image(img_output,width=600,use_column_width=True) # Interface web
+			elif enhance_type == 'Brightness':
+				c_rate = st.slider("Brightness",0.5,5.0)
+				enhancer = ImageEnhance.Brightness(our_image)
+				img_output = enhancer.enhance(c_rate)
+				st.image(img_output,width=600,use_column_width=True)
 
 
 			else:
-				st.text("Imagem original") 
-				st.image(our_image,width=600,use_column_width=True) 
+				st.text("Original Image")
+				st.image(our_image,width=600,use_column_width=True)
 
 
-		elif choice == 'Diagnosis': #
-			if st.sidebar.button("Diagnóstico"): 
+		elif choice == 'Diagnosis':
+			
+			if st.sidebar.button("Diagnosis"):
 
-				# Image to Black and White # Converte a imagem de raio-X do tórax para preto e branco 
-				new_img = np.array(our_image.convert('RGB')) # Converte a imagem de raio-X do tórax para RGB # nossa imagem é binária, temos que convertê-la em array 
-				new_img = cv2.cvtColor(new_img,1) # 0 é original, 1 é escala de cinza
-				gray = cv2.cvtColor(new_img,cv2.COLOR_BGR2GRAY) # converte em escala de cinza 
-				st.text("Raio-x do tórax") #
+				# Image to Black and White
+				new_img = np.array(our_image.convert('RGB')) #our image is binary we have to convert it in array
+				new_img = cv2.cvtColor(new_img,1) # 0 is original, 1 is grayscale
+				gray = cv2.cvtColor(new_img,cv2.COLOR_BGR2GRAY)
+				st.text("Chest X-Ray")
 				st.image(gray,use_column_width=True)
 
-				# PX-Ray (Image) Preprocessing # Pré-processamento da imagem de raio-X do tórax 
-				IMG_SIZE = (200,200) # Tamanho da imagem de raio-X do tórax
-				img = cv2.equalizeHist(gray) # Equalização do histograma da imagem de raio-X do tórax
-				img = cv2.resize(img,IMG_SIZE) # Redimensionamento da imagem de raio-X do tórax
-				img = img/255.  # Normalização da imagem de raio-X do tórax
+				# PX-Ray (Image) Preprocessing
+				IMG_SIZE = (200,200)
+				img = cv2.equalizeHist(gray)
+				img = cv2.resize(img,IMG_SIZE)
+				img = img/255. #Normalization
 
-				# Image reshaping according to Tensorflow format # Redimensionamento da imagem de raio-X do tórax de acordo com o formato do Tensorflow
-				X_Ray = img.reshape(1,200,200,1) 
-				# Pre-Trained CNN Model Importing # Importação do modelo CNN pré-treinado 
-				model = tf.keras.models.load_model("./models/Covid19_CNN_Classifier.h5") 
-				# Diagnosis (Prevision=Binary Classification) # Diagnóstico (Previsão = Classificação binária)
+				# Image reshaping according to Tensorflow format
+				X_Ray = img.reshape(1,200,200,1)
+
+				# Pre-Trained CNN Model Importing
+				model = tf.keras.models.load_model("./models/Covid19_CNN_Classifier.h5")
+
+				# Diagnosis (Prevision=Binary Classification)
 				diagnosis = model.predict_classes(X_Ray)
-				diagnosis_proba = model.predict(X_Ray) 
-				probability_cov = diagnosis_proba*100 
-				probability_no_cov = (1-diagnosis_proba)*100 
+				diagnosis_proba = model.predict(X_Ray)
+				probability_cov = diagnosis_proba*100
+				probability_no_cov = (1-diagnosis_proba)*100
+
 				my_bar = st.sidebar.progress(0)
 
 
-				for percent_complete in range(100): 
-					time.sleep(0.05) # tempo de espera 
-					my_bar.progress(percent_complete + 1) 
+				for percent_complete in range(100):
+					time.sleep(0.05)
+					my_bar.progress(percent_complete + 1)
 
-				# Diagnosis Cases: No-Covid=0, Covid=1 # Casos de diagnóstico: No-Covid = 0, Covid = 1
-				if diagnosis == 0: # Se o diagnóstico for 0 (sem Covid-19)  
-					st.sidebar.success("DIAGNÓSTICO: SEM COVID-19 (Probabilidade: %.2f%%)" % (probability_no_cov)) 
-				else: # Se o diagnóstico for 1 (com Covid-19) 
-					st.sidebar.error("DIAGNÓSTICO: COVID-19 (Probabilidade: %.2f%%)" % (probability_cov)) 
+				# Diagnosis Cases: No-Covid=0, Covid=1
+				if diagnosis == 0:
+					st.sidebar.success("DIAGNOSIS: NO COVID-19 (Probability: %.2f%%)" % (probability_no_cov))
+				else:
+					st.sidebar.error("DIAGNOSIS: COVID-19 (Probability: %.2f%%)" % (probability_cov))
 
-				st.warning("Este Web App é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu diagnóstico e o autor não é médico!") # Aviso na interface web 
+				st.warning("This Web App is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!")
 
 
 		else:
-			st.subheader("Disclaimer and Info") 
-			st.subheader("Disclaimer") #
+			st.subheader("Disclaimer and Info")
+			st.subheader("Disclaimer")
 			st.write("**This Tool is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!**")
 			st.write("**Please don't take the diagnosis outcome seriously and NEVER consider it valid!!!**")
 			st.subheader("Info")
@@ -131,14 +137,12 @@ def main(): # Função principal da aplicação web
 			st.write("Anybody has interest in this project can drop me an email and I'll be very happy to reply and help.")
 
 
-	if st.sidebar.button("About the Author"): 
-		st.sidebar.subheader("Ferramenta de Detecção Covid19") 
-		st.sidebar.markdown("by [Ing. Rosario Moscato](https://www.youtube.com/channel/UCDn-FahQNJQOekLrOcR7-7Q)") 
-		st.sidebar.markdown("[rosario.moscato@outlook.com](mailto:rosario.moscato@outlook.com)") 
+	if st.sidebar.button("About the Author"):
+		st.sidebar.subheader("Covid-19 Detection Tool")
+		st.sidebar.markdown("by [Ing. Rosario Moscato](https://www.youtube.com/channel/UCDn-FahQNJQOekLrOcR7-7Q)")
+		st.sidebar.markdown("[rosario.moscato@outlook.com](mailto:rosario.moscato@outlook.com)")
 		st.sidebar.text("All Rights Reserved (2020)")
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
 		main()	
-
-		

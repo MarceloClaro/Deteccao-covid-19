@@ -37,14 +37,13 @@ def main(): # Função principal da aplicação web
 
 	image_file = st.sidebar.file_uploader("Carregue uma imagem de raio-X (jpg, png ou jpeg)",type=['jpg','png','jpeg']) 
 
-	if image_file is not None: # Se o usuário carregar uma imagem de raio-X do tórax 
-		our_image = Image.open(image_file) # Carregue a imagem de raio-X do tórax 
-
-		if st.sidebar.button("Pré-visualização de imagem"): # Se o usuário clicar no botão "Pré-visualização de imagem" 
-			st.sidebar.image(our_image,width=300) # Pré-visualização da imagem de raio-X do tórax 
+	if image_file is not None: 
+		our_image = Image.open(image_file) 
+		if st.sidebar.button("Pré-visualização de imagem"): 
+			st.sidebar.image(our_image,width=300)  
 
 		activities = ["Aprimoramento de imagem","Diagnóstico", "Isenção de responsabilidade e informações"] # Opções da interface web 
-		choice = st.sidebar.selectbox("Selecione a atividade",activities) # Interface web 
+		choice = st.sidebar.selectbox("Selecione a atividade",activities) 
 
 		if choice == 'Image Enhancement': # Se o usuário selecionar a opção "Aprimoramento de imagem"
 			st.subheader("Melhoria de imagem") # Interface web	
@@ -66,13 +65,12 @@ def main(): # Função principal da aplicação web
 
 
 			else:
-				st.text("Imagem original") # Interface web 
-				st.image(our_image,width=600,use_column_width=True) # Interface web
+				st.text("Imagem original") 
+				st.image(our_image,width=600,use_column_width=True) 
 
 
-		elif choice == 'Diagnosis': # Se o usuário selecionar a opção "Diagnóstico"
-			
-			if st.sidebar.button("Diagnóstico"): # Se o usuário clicar no botão "Diagnóstico" 
+		elif choice == 'Diagnosis': #
+			if st.sidebar.button("Diagnóstico"): 
 
 				# Image to Black and White # Converte a imagem de raio-X do tórax para preto e branco 
 				new_img = np.array(our_image.convert('RGB')) # Converte a imagem de raio-X do tórax para RGB # nossa imagem é binária, temos que convertê-la em array 
@@ -88,36 +86,33 @@ def main(): # Função principal da aplicação web
 				img = img/255.  # Normalização da imagem de raio-X do tórax
 
 				# Image reshaping according to Tensorflow format # Redimensionamento da imagem de raio-X do tórax de acordo com o formato do Tensorflow
-				X_Ray = img.reshape(1,200,200,1) # Redimensionamento da imagem de raio-X do tórax
-
+				X_Ray = img.reshape(1,200,200,1) 
 				# Pre-Trained CNN Model Importing # Importação do modelo CNN pré-treinado 
-				model = tf.keras.models.load_model("./models/Covid19_CNN_Classifier.h5") # Importação do modelo CNN pré-treinado
-
+				model = tf.keras.models.load_model("./models/Covid19_CNN_Classifier.h5") 
 				# Diagnosis (Prevision=Binary Classification) # Diagnóstico (Previsão = Classificação binária)
-				diagnosis = model.predict_classes(X_Ray) # Diagnóstico (Previsão = Classificação binária)
-				diagnosis_proba = model.predict(X_Ray) # Probabilidade do diagnóstico (Previsão = Classificação binária)
-				probability_cov = diagnosis_proba*100 # Probabilidade do diagnóstico (Previsão = Classificação binária)
-				probability_no_cov = (1-diagnosis_proba)*100 # Probabilidade do diagnóstico (Previsão = Classificação binária)
+				diagnosis = model.predict_classes(X_Ray)
+				diagnosis_proba = model.predict(X_Ray) 
+				probability_cov = diagnosis_proba*100 
+				probability_no_cov = (1-diagnosis_proba)*100 
+				my_bar = st.sidebar.progress(0)
 
-				my_bar = st.sidebar.progress(0) # Interface web
 
-
-				for percent_complete in range(100): # para cada porcentagem completa
+				for percent_complete in range(100): 
 					time.sleep(0.05) # tempo de espera 
-					my_bar.progress(percent_complete + 1) # progresso da barra de progresso
+					my_bar.progress(percent_complete + 1) 
 
 				# Diagnosis Cases: No-Covid=0, Covid=1 # Casos de diagnóstico: No-Covid = 0, Covid = 1
 				if diagnosis == 0: # Se o diagnóstico for 0 (sem Covid-19)  
-					st.sidebar.success("DIAGNÓSTICO: SEM COVID-19 (Probabilidade: %.2f%%)" % (probability_no_cov)) # sucesso na interface web
+					st.sidebar.success("DIAGNÓSTICO: SEM COVID-19 (Probabilidade: %.2f%%)" % (probability_no_cov)) 
 				else: # Se o diagnóstico for 1 (com Covid-19) 
-					st.sidebar.error("DIAGNÓSTICO: COVID-19 (Probabilidade: %.2f%%)" % (probability_cov)) # sucesso na interface web 
+					st.sidebar.error("DIAGNÓSTICO: COVID-19 (Probabilidade: %.2f%%)" % (probability_cov)) 
 
 				st.warning("Este Web App é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu diagnóstico e o autor não é médico!") # Aviso na interface web 
 
 
-		else: # Se o usuário selecionar a opção "Sobre" 
-			st.subheader("Disclaimer and Info") # Interface web
-			st.subheader("Disclaimer") # Interface web 
+		else:
+			st.subheader("Disclaimer and Info") 
+			st.subheader("Disclaimer") #
 			st.write("**This Tool is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!**")
 			st.write("**Please don't take the diagnosis outcome seriously and NEVER consider it valid!!!**")
 			st.subheader("Info")
@@ -136,14 +131,14 @@ def main(): # Função principal da aplicação web
 			st.write("Anybody has interest in this project can drop me an email and I'll be very happy to reply and help.")
 
 
-	if st.sidebar.button("About the Author"): # Se o usuário selecionar a opção "Sobre o autor" 
-		st.sidebar.subheader("Ferramenta de Detecção Covid19") # ferramenta de detecção Covid19
-		st.sidebar.markdown("by [Ing. Rosario Moscato](https://www.youtube.com/channel/UCDn-FahQNJQOekLrOcR7-7Q)") # autor da ferramenta de detecção Covid19
-		st.sidebar.markdown("[rosario.moscato@outlook.com](mailto:rosario.moscato@outlook.com)") # email do autor da ferramenta de detecção Covid19
-		st.sidebar.text("All Rights Reserved (2020)") # Todos os direitos reservados (2022)
+	if st.sidebar.button("About the Author"): 
+		st.sidebar.subheader("Ferramenta de Detecção Covid19") 
+		st.sidebar.markdown("by [Ing. Rosario Moscato](https://www.youtube.com/channel/UCDn-FahQNJQOekLrOcR7-7Q)") 
+		st.sidebar.markdown("[rosario.moscato@outlook.com](mailto:rosario.moscato@outlook.com)") 
+		st.sidebar.text("All Rights Reserved (2020)")
 
 
-if __name__ == '__main__': # Se o nome do módulo for igual a main  
-		main()	# Chama a função main() 
+if __name__ == '__main__': 
+		main()	
 
-		# Fim do código
+		

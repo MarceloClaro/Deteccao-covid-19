@@ -54,14 +54,14 @@ def main():
 
 			if enhance_type == 'Contraste':
 				c_rate = st.slider("Contraste",0.5,5.0)
-				enhancer = ImageEnhance.Contraste(our_image)
+				enhancer = ImageEnhance.Contrast(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,use_column_width=True)
 
 
 			elif enhance_type == 'Brilho':
 				c_rate = st.slider("Brilho",0.5,5.0)
-				enhancer = ImageEnhance.Brilho(our_image)
+				enhancer = ImageEnhance.Brightness(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,width=600,use_column_width=True)
 

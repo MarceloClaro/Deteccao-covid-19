@@ -45,29 +45,29 @@ def main():
 			st.sidebar.image(our_image,width=300)
 
 		activities = ["Melhoria de imagem","Diagnóstico", "Isenção de responsabilidade e informações"]
-		choice = st.sidebar.selectbox("Selecione a atividade",activities)
+		choice = st.sidebar.selectbox("Select Activty",activities)
 
 		if choice == 'Melhoria de imagem':
 			st.subheader("Melhoria de imagem")
 
-			enhance_type = st.sidebar.radio("Melhorar tipo",["Original","Contraste","Brilho"])
+			enhance_type = st.sidebar.radio("Enhance Type",["Original","Contrast","Brightness"])
 
-			if enhance_type == 'Contraste':
-				c_rate = st.slider("Contraste",0.5,5.0)
+			if enhance_type == 'Contrast':
+				c_rate = st.slider("Contrast",0.5,5.0)
 				enhancer = ImageEnhance.Contrast(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,use_column_width=True)
 
 
-			elif enhance_type == 'Brilho':
-				c_rate = st.slider("Brilho",0.5,5.0)
+			elif enhance_type == 'Brightness':
+				c_rate = st.slider("Brightness",0.5,5.0)
 				enhancer = ImageEnhance.Brightness(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,width=600,use_column_width=True)
 
 
 			else:
-				st.text("Imagem Original")
+				st.text("Original Image")
 				st.image(our_image,width=600,use_column_width=True)
 
 
@@ -79,7 +79,7 @@ def main():
 				new_img = np.array(our_image.convert('RGB')) #our image is binary we have to convert it in array
 				new_img = cv2.cvtColor(new_img,1) # 0 is original, 1 is grayscale
 				gray = cv2.cvtColor(new_img,cv2.COLOR_BGR2GRAY)
-				st.text("Raio-x do tórax")
+				st.text("Chest X-Ray")
 				st.image(gray,use_column_width=True)
 
 				# PX-Ray (Image) Preprocessing
@@ -117,27 +117,27 @@ def main():
 
 
 		else:
-			st.subheader("Isenção de responsabilidade e informações")
-			st.subheader("Isenção de responsabilidade")
-			st.write("**Esta ferramenta é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu diagnóstico e o autor não é médico!**")
-			st.write("**Por favor, não leve a sério o resultado do diagnóstico e NUNCA o considere válido!!!**")
-			st.subcabeçalho ("Informações")
-			st.write("Esta ferramenta foi inspirada nos seguintes trabalhos:")
-			st.write("- [Detectando COVID-19 em imagens de raios X com Keras, TensorFlow e Deep Learning](https://www.pyimagesearch.com/2020/03/16/detecting-covid-19-in-x-ray-images-with-keras-tensorflow-and-deep-learning/)")
-			st.write("-[Combate ao vírus Corona com inteligência artificial e aprendizagem profunda](https://www.youtube.com/watch?v=_bDHOwASVS4)")
+			st.subheader("Disclaimer and Info")
+			st.subheader("Disclaimer")
+			st.write("**This Tool is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!**")
+			st.write("**Please don't take the diagnosis outcome seriously and NEVER consider it valid!!!**")
+			st.subheader("Info")
+			st.write("This Tool gets inspiration from the following works:")
+			st.write("- [Detecting COVID-19 in X-ray images with Keras, TensorFlow, and Deep Learning](https://www.pyimagesearch.com/2020/03/16/detecting-covid-19-in-x-ray-images-with-keras-tensorflow-and-deep-learning/)") 
+			st.write("- [Fighting Corona Virus with Artificial Intelligence & Deep Learning](https://www.youtube.com/watch?v=_bDHOwASVS4)") 
 			st.write("- [Deep Learning per la Diagnosi del COVID-19](https://www.youtube.com/watch?v=dpa8TFg1H_U&t=114s)")
-			st.write("Usamos 206 imagens de Raios-X Posterior-Anterior (PA)(https://github.com/ieee8023/covid-chestxray-dataset/blob/master/metadata.csv) de pacientes infectados por Covid-19 e 206 Posterior-Anterior X-Ray [imagens](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia) de pessoas saudáveis ​​para treinar uma Rede Neural Convolucional (composta por cerca de 5 milhões de parâmetros treináveis) a fim de fazer uma classificação de quadros referentes a pessoas infectadas e não infectadas.")
-			st.write("Como o conjunto de dados era muito pequeno, algumas técnicas de aumento de dados foram aplicadas (rotação e faixa de brilho). O resultado foi muito bom, pois obtivemos 94,5% de precisão no conjunto de treinamento e 89,3% de precisão no conjunto de teste. Posteriormente, o modelo foi testado usando um novo conjunto de dados de pacientes infectados por pneumonia e, neste caso, o desempenho foi muito bom, apenas 2 casos em 206 foram reconhecidos incorretamente. O último teste foi realizado com 8 arquivos SARS X-Ray PA, todas essas imagens foram classificadas como Covid-19.")
-			st.write("Infelizmente em nosso teste obtivemos 5 casos de 'Falso Negativo', pacientes classificados como saudáveis ​​que na verdade estão infectados pelo Covid-19. É muito fácil entender que esses casos podem ser um grande problema.")
-			st.write("O modelo está sofrendo de algumas limitações:")
-			st.write("-pequeno conjunto de dados (um conjunto de dados maior com certeza ajudará a melhorar o desempenho)")
-			st.write("- imagens vindas apenas da posição PA")
-			st.write("- uma atividade de ajuste fino é fortemente sugerida")
+			st.write("We used 206 Posterior-Anterior (PA) X-Ray [images](https://github.com/ieee8023/covid-chestxray-dataset/blob/master/metadata.csv) of patients infected by Covid-19 and 206 Posterior-Anterior X-Ray [images](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia) of healthy people to train a Convolutional Neural Network (made by about 5 million trainable parameters) in order to make a classification of pictures referring to infected and not-infected people.")
+			st.write("Since dataset was quite small, some data augmentation techniques have been applied (rotation and brightness range). The result was quite good since we got 94.5% accuracy on the training set and 89.3% accuracy on the test set. Afterwards the model was tested using a new dataset of patients infected by pneumonia and in this case the performance was very good, only 2 cases in 206 were wrongly recognized. Last test was performed with 8 SARS X-Ray PA files, all these images have been classified as Covid-19.")
+			st.write("Unfortunately in our test we got 5 cases of 'False Negative', patients classified as healthy that actually are infected by Covid-19. It's very easy to understand that these cases can be a huge issue.")
+			st.write("The model is suffering of some limitations:")
+			st.write("- small dataset (a bigger dataset for sure will help in improving performance)")
+			st.write("- images coming only from the PA position")
+			st.write("- a fine tuning activity is strongly suggested")
 			st.write("")
-			st.write("Alguém que tenha interesse neste projeto pode me mandar um e-mail que terei o maior prazer em responder e ajudar.")
+			st.write("Anybody has interest in this project can drop me an email and I'll be very happy to reply and help.")
 
 
-	if st.sidebar.button("Sobre o autor"):
+	if st.sidebar.button("About the Author"):
 		st.sidebar.subheader("Ferramenta de teste para COVID-19")
 		st.sidebar.markdown("Prof.Marcelo Claro")
 		st.sidebar.markdown("marcelolcaro@geomaker.org")

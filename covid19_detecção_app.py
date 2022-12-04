@@ -7,116 +7,119 @@ Modelo CNN: Covid19_CNN_Classifier.h5
 """
 
 
-# Core Pkgs
+# Pacotes principais
 import streamlit as st
-st.set_page_config(page_title="Ferramenta de Detecção Covid-19", page_icon="covid19.jpg", layout='centered', initial_sidebar_state='auto')
+st.set_page_config(page_title="Ferramenta de Detecção Covid-19", page_icon="covid19.jpg", layout='centered', initial_sidebar_state='auto') # Configurações da página
 
-import os
+# Pacotes para manipulação de arquivos
+import os 
 import time
 
-# Viz Pkgs
+#  Pacotes de processamento de imagens
 import cv2
 from PIL import Image,ImageEnhance
 import numpy as np 
 
-# AI Pkgs
+# Pacotes de Machine Learning
 import tensorflow as tf
 
+# Função para carregar o modelo
 
-def main():
+# Função principal do programa  
+def main(): 
 	"""Ferramenta simples para detecção de Covid-19 por radiografia de tórax"""
 	html_templ = """
 	<div style="background-color:blue;padding:10px;">
 	<h1 style="color:yellow">Detecção de Covid-19</h1>
 	</div>
 	"""
-
+# Título da página
 	st.markdown(html_templ,unsafe_allow_html=True)
 	st.write("Uma proposta simples para o diagnóstico de Covid-19 com tecnologia Deep Learning e Streamlit")
-
+	# Menu de navegação
 	st.sidebar.image("covid19.jpg",width=300)
-
+	# Menu lateral
 	image_file = st.sidebar.file_uploader("Carregar uma imagem de raio-X (jpg, png or jpeg)",type=['jpg','png','jpeg'])
-
+	# CARREGAR IMAGEM
 	if image_file is not None:
 		our_image = Image.open(image_file)
-
+		# Botão para carregar a imagem 
 		if st.sidebar.button("Pré-visualização de imagem"):
 			st.sidebar.image(our_image,width=300)
 
 		activities = ["Melhoria de imagem","Diagnóstico", "Isenção de responsabilidade e informações"]
 		choice = st.sidebar.selectbox("Melhoria de imagem'",activities)
-
+		# Melhoria de imagem
 		if choice == 'Melhoria de imagem':
 			st.subheader("Melhoria de imagem")
 
 			enhance_type = st.sidebar.radio("Melhoria de imagem'",["Original","Contraste","Brilho"])
-
+			# Contraste
 			if enhance_type == 'Contraste':
 				c_rate = st.slider("Contraste",0.5,5.0)
 				enhancer = ImageEnhance.Contrast(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,use_column_width=True)
 
-
+			# Brilho
 			elif enhance_type == 'Brilho':
 				c_rate = st.slider("Brilho",0.5,5.0)
 				enhancer = ImageEnhance.Brightness(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,width=600,use_column_width=True)
 
-
+			# Original 
 			else:
 				st.text("Original Image")
 				st.image(our_image,width=600,use_column_width=True)
 
-
+		# Diagnóstico de Covid-19 por radiografia de tórax 
 		elif choice == 'Diagnóstico':
-			
+			# BOTÃO PARA CARREGAR O MODELO
 			if st.sidebar.button("Diagnóstico"):
 
-				# Image to Black and White
-				new_img = np.array(our_image.convert('RGB')) #our image is binary we have to convert it in array
-				new_img = cv2.cvtColor(new_img,1) # 0 is original, 1 is grayscale
+				# Imagem para Preto e Branco
+				new_img = np.array(our_image.convert('RGB')) # nossa imagem é binária, temos que convertê-la em array
+				new_img = cv2.cvtColor(new_img,1) # 0 é original, 1 é escala de cinza
 				gray = cv2.cvtColor(new_img,cv2.COLOR_BGR2GRAY)
 				st.text("Rio-X em escala de cinza")
 				st.image(gray,use_column_width=True)
 
-				# PX-Ray (Image) Preprocessing
+				# Pré-processamento de raios PX (imagem)
 				IMG_SIZE = (200,200)
 				img = cv2.equalizeHist(gray)
 				img = cv2.resize(img,IMG_SIZE)
-				img = img/255. #Normalization
+				img = img/255. # Normalização
 
-				# Image reshaping according to Tensorflow format
+				# Remodelagem da imagem de acordo com o formato Tensorflow
 				X_Ray = img.reshape(1,200,200,1)
 
 				# Pre-Trained CNN Model Importing
 				model = tf.keras.models.load_model('./models/Covid19_CNN_Classifier.h5')
 
-				# Diagnóstico (Prevision=Binary Classification)
+				# Diagnóstico (Previsão = Classificação Binária)
 				Diagnóstico = model.predict_classes(X_Ray)
 				Diagnóstico_proba = model.predict(X_Ray)
 				probability_cov = Diagnóstico_proba*100
 				probability_no_cov = (1-Diagnóstico_proba)*100
-
+				# Resultado
 				my_bar = st.sidebar.progress(0)
 
-
+				# Loop para a barra de progresso 
 				for percent_complete in range(100):
 					time.sleep(0.05)
 					my_bar.progress(percent_complete + 1)
 
-				# Diagnóstico Cases: No-Covid=0, Covid=1
+				# Casos de Diagnóstico: Não-Covid=0, Covid=1
 				if Diagnóstico == 0:
 					st.sidebar.success("Diagnóstico: NÃO COVID-19 (Probabilidade: %.2f%%)" % (probability_no_cov))
 				else:
 					st.sidebar.error("Diagnóstico: COVID-19 (Probabilidade %.2f%%)" % (probability_cov))
-
+				# Imagem de saída
 				st.warning("Este Web App é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu Diagnóstico e o autor não é Médico!")
 
 
-		else:
+		else: # Isenção de responsabilidade e informações
 			st.subheader("Isenção de responsabilidade e informações")
 			st.subheader("Isenção de responsabilidade")
 			st.write("**Esta ferramenta é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu diagnóstico e o autor não é médico!**")
@@ -136,13 +139,13 @@ def main():
 			st.write("")
 			st.write("Quem tiver interesse neste projeto pode me mandar um e-mail que terei o maior prazer em responder e ajudar.")
 
-
+# Execução do Web App
 	if st.sidebar.button("Sobre o autor"):
 		st.sidebar.subheader("Ferramenta de teste para COVID-19")
 		st.sidebar.markdown("Prof.Marcelo Claro")
 		st.sidebar.markdown("marcelolcaro@geomaker.org")
 		st.sidebar.text("Todos os direitos reservados(2022)")
 
-
+# Execução do Web App 
 if __name__ == '__main__':
 		main()	

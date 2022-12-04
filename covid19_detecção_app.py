@@ -45,22 +45,22 @@ def main():
 			st.sidebar.image(our_image,width=300)
 
 		activities = ["Melhoria de imagem","Diagnóstico", "Isenção de responsabilidade e informações"]
-		choice = st.sidebar.selectbox("Select Activty",activities)
+		choice = st.sidebar.selectbox("Melhoria de imagem'",activities)
 
 		if choice == 'Melhoria de imagem':
 			st.subheader("Melhoria de imagem")
 
-			enhance_type = st.sidebar.radio("Enhance Type",["Original","Contrast","Brightness"])
+			enhance_type = st.sidebar.radio("Melhoria de imagem'",["Original","Contraste","Brilho"])
 
-			if enhance_type == 'Contrast':
-				c_rate = st.slider("Contrast",0.5,5.0)
+			if enhance_type == 'Contraste':
+				c_rate = st.slider("Contraste",0.5,5.0)
 				enhancer = ImageEnhance.Contrast(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,use_column_width=True)
 
 
-			elif enhance_type == 'Brightness':
-				c_rate = st.slider("Brightness",0.5,5.0)
+			elif enhance_type == 'Brilho':
+				c_rate = st.slider("Brilho",0.5,5.0)
 				enhancer = ImageEnhance.Brightness(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,width=600,use_column_width=True)
@@ -79,7 +79,7 @@ def main():
 				new_img = np.array(our_image.convert('RGB')) #our image is binary we have to convert it in array
 				new_img = cv2.cvtColor(new_img,1) # 0 is original, 1 is grayscale
 				gray = cv2.cvtColor(new_img,cv2.COLOR_BGR2GRAY)
-				st.text("Chest X-Ray")
+				st.text("Rio-X em escala de cinza")
 				st.image(gray,use_column_width=True)
 
 				# PX-Ray (Image) Preprocessing

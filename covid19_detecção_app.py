@@ -132,16 +132,16 @@ def main():
 			st.write("O modelo sofre de algumas limitações:")
 			st.write("- conjunto de dados pequeno (um conjunto de dados maior com certeza ajudará a melhorar o desempenho)")
 			st.write("- imagens provenientes apenas da posição PA")
-			st.write("- a fine tuning activity is strongly suggested")
+			st.write("- uma atividade de ajuste fino é fortemente sugerida")
 			st.write("")
 			st.write("Quem tiver interesse neste projeto pode me mandar um e-mail que terei o maior prazer em responder e ajudar.")
 
 
-	if st.sidebar.button("About the Author"):
+	if st.sidebar.button("Sobre o autor"):
 		st.sidebar.subheader("Ferramenta de teste para COVID-19")
 		st.sidebar.markdown("Prof.Marcelo Claro")
 		st.sidebar.markdown("marcelolcaro@geomaker.org")
-		st.sidebar.text("All Rights Reserved (2022)")
+		st.sidebar.text("Todos os direitos reservados(2022)")
 
 
 if __name__ == '__main__':

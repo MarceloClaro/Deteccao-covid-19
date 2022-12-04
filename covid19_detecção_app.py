@@ -44,36 +44,36 @@ def main():
 		if st.sidebar.button("Pré-visualização de imagem"):
 			st.sidebar.image(our_image,width=300)
 
-		activities = ["Image Enhancement","Diagnosis", "Disclaimer and Info"]
-		choice = st.sidebar.selectbox("Select Activty",activities)
+		activities = ["Melhoria de imagem","Diagnóstico", "Isenção de responsabilidade e informações"]
+		choice = st.sidebar.selectbox("Selecione a atividade",activities)
 
-		if choice == 'Image Enhancement':
-			st.subheader("Image Enhancement")
+		if choice == 'Melhoria de imagem':
+			st.subheader("Melhoria de imagem")
 
-			enhance_type = st.sidebar.radio("Enhance Type",["Original","Contrast","Brightness"])
+			enhance_type = st.sidebar.radio("Melhorar tipo",["Original","Contraste","Brilho"])
 
-			if enhance_type == 'Contrast':
-				c_rate = st.slider("Contrast",0.5,5.0)
-				enhancer = ImageEnhance.Contrast(our_image)
+			if enhance_type == 'Contraste':
+				c_rate = st.slider("Contraste",0.5,5.0)
+				enhancer = ImageEnhance.Contraste(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,use_column_width=True)
 
 
-			elif enhance_type == 'Brightness':
-				c_rate = st.slider("Brightness",0.5,5.0)
-				enhancer = ImageEnhance.Brightness(our_image)
+			elif enhance_type == 'Brilho':
+				c_rate = st.slider("Brilho",0.5,5.0)
+				enhancer = ImageEnhance.Brilho(our_image)
 				img_output = enhancer.enhance(c_rate)
 				st.image(img_output,width=600,use_column_width=True)
 
 
 			else:
-				st.text("Original Image")
+				st.text("Imagem Original")
 				st.image(our_image,width=600,use_column_width=True)
 
 
-		elif choice == 'Diagnosis':
+		elif choice == 'Diagnóstico':
 			
-			if st.sidebar.button("Diagnosis"):
+			if st.sidebar.button("Diagnóstico"):
 
 				# Image to Black and White
 				new_img = np.array(our_image.convert('RGB')) #our image is binary we have to convert it in array
@@ -94,11 +94,11 @@ def main():
 				# Pre-Trained CNN Model Importing
 				model = tf.keras.models.load_model('./models/Covid19_CNN_Classifier.h5')
 
-				# Diagnosis (Prevision=Binary Classification)
-				diagnosis = model.predict_classes(X_Ray)
-				diagnosis_proba = model.predict(X_Ray)
-				probability_cov = diagnosis_proba*100
-				probability_no_cov = (1-diagnosis_proba)*100
+				# Diagnóstico (Prevision=Binary Classification)
+				Diagnóstico = model.predict_classes(X_Ray)
+				Diagnóstico_proba = model.predict(X_Ray)
+				probability_cov = Diagnóstico_proba*100
+				probability_no_cov = (1-Diagnóstico_proba)*100
 
 				my_bar = st.sidebar.progress(0)
 
@@ -107,17 +107,17 @@ def main():
 					time.sleep(0.05)
 					my_bar.progress(percent_complete + 1)
 
-				# Diagnosis Cases: No-Covid=0, Covid=1
-				if diagnosis == 0:
-					st.sidebar.success("DIAGNOSIS: NO COVID-19 (Probability: %.2f%%)" % (probability_no_cov))
+				# Diagnóstico Cases: No-Covid=0, Covid=1
+				if Diagnóstico == 0:
+					st.sidebar.success("Diagnóstico: NO COVID-19 (Probability: %.2f%%)" % (probability_no_cov))
 				else:
-					st.sidebar.error("DIAGNOSIS: COVID-19 (Probability: %.2f%%)" % (probability_cov))
+					st.sidebar.error("Diagnóstico: COVID-19 (Probability: %.2f%%)" % (probability_cov))
 
-				st.warning("This Web App is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!")
+				st.warning("This Web App is just a DEMO about Artificial Neural Networks so there is no clinical value in its Diagnóstico and the author is not a Doctor!")
 
 
 		else:
-			st.subheader("Disclaimer and Info")
+			st.subheader("Isenção de responsabilidade e informações")
 			st.subheader("Disclaimer")
 			st.write("**This Tool is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!**")
 			st.write("**Please don't take the diagnosis outcome seriously and NEVER consider it valid!!!**")

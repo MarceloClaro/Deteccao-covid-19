@@ -138,10 +138,10 @@ def main():
 
 
 	if st.sidebar.button("About the Author"):
-		st.sidebar.subheader("Covid-19 Detection Tool")
-		st.sidebar.markdown("by [Ing. Rosario Moscato](https://www.youtube.com/channel/UCDn-FahQNJQOekLrOcR7-7Q)")
-		st.sidebar.markdown("[rosario.moscato@outlook.com](mailto:rosario.moscato@outlook.com)")
-		st.sidebar.text("All Rights Reserved (2020)")
+		st.sidebar.subheader("Ferramenta de teste para COVID-19")
+		st.sidebar.markdown("Prof.Marcelo Claro")
+		st.sidebar.markdown("marcelolcaro@geomaker.org")
+		st.sidebar.text("All Rights Reserved (2022)")
 
 
 if __name__ == '__main__':

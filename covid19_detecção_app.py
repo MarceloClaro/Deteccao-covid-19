@@ -79,7 +79,7 @@ def main():
 				new_img = np.array(our_image.convert('RGB')) #our image is binary we have to convert it in array
 				new_img = cv2.cvtColor(new_img,1) # 0 is original, 1 is grayscale
 				gray = cv2.cvtColor(new_img,cv2.COLOR_BGR2GRAY)
-				st.text("Chest X-Ray")
+				st.text("Raio-x do tórax")
 				st.image(gray,use_column_width=True)
 
 				# PX-Ray (Image) Preprocessing

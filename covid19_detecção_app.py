@@ -109,17 +109,17 @@ def main():
 
 				# Diagnóstico Cases: No-Covid=0, Covid=1
 				if Diagnóstico == 0:
-					st.sidebar.success("Diagnóstico: NO COVID-19 (Probability: %.2f%%)" % (probability_no_cov))
+					st.sidebar.success("Diagnóstico: NÃO COVID-19 (Probabilidade: %.2f%%)" % (probability_no_cov))
 				else:
-					st.sidebar.error("Diagnóstico: COVID-19 (Probability: %.2f%%)" % (probability_cov))
+					st.sidebar.error("Diagnóstico: COVID-19 (Probabilidade %.2f%%)" % (probability_cov))
 
 				st.warning("Este Web App é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu Diagnóstico e o autor não é Médico!")
 
 
 		else:
-			st.subheader("Disclaimer and Info")
-			st.subheader("Disclaimer")
-			st.write("**This Tool is just a DEMO about Artificial Neural Networks so there is no clinical value in its diagnosis and the author is not a Doctor!**")
+			st.subheader("Isenção de responsabilidade e informações")
+			st.subheader("Isenção de responsabilidade")
+			st.write("**Esta ferramenta é apenas uma DEMO sobre Redes Neurais Artificiais, portanto não há valor clínico em seu diagnóstico e o autor não é médico!**")
 			st.write("**Please don't take the diagnosis outcome seriously and NEVER consider it valid!!!**")
 			st.subheader("Info")
 			st.write("This Tool gets inspiration from the following works:")

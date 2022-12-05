@@ -94,7 +94,7 @@ def main():
 				X_Ray = img.reshape(1,200,200,1)
 
 				# Importação de modelo CNN pré-treinado 
-				model = tf.keras.models.load_model('Covid19_CNN_Classifier.h5')
+				model = tf.keras.models.load_model('./Covid19_CNN_Classifier.h5')
 
 				# Diagnóstico (Previsão = Classificação Binária)
 				diagnosis = model.predict_classes(X_Ray)

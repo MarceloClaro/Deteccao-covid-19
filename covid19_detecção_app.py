@@ -97,10 +97,10 @@ def main():
 				model = tf.keras.models.load_model('Covid19_CNN_Classifier.h5')
 
 				# Diagnóstico (Previsão = Classificação Binária)
-				Diagnóstico = model.predict_classes(X_Ray)
-				Diagnóstico_proba = model.predict(X_Ray)
-				probability_cov = Diagnóstico_proba*100
-				probability_no_cov = (1-Diagnóstico_proba)*100
+				Diagnosis = model.predict_classes(X_Ray)
+				Diagnosis_proba = model.predict(X_Ray)
+				probability_cov = Diagnosis_proba*100
+				probability_no_cov = (1-Diagnosis_proba)*100
 				# Resultado
 				my_bar = st.sidebar.progress(0)
 
@@ -110,7 +110,7 @@ def main():
 					my_bar.progress(percent_complete + 1)
 
 				# Casos de Diagnóstico: Não-Covid=0, Covid=1
-				if Diagnóstico == 0:
+				if Diagnosis == 0:
 					st.sidebar.success("Diagnóstico: NÃO COVID-19 (Probabilidade: %.2f%%)" % (probability_no_cov))
 				else:
 					st.sidebar.error("Diagnóstico: COVID-19 (Probabilidade %.2f%%)" % (probability_cov))

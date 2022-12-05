@@ -26,13 +26,19 @@ import tensorflow as tf
 # Pacotes de download de arquivos google drive
 from google_drive_downloader import GoogleDriveDownloader as gdd
 
+# Pacotes de download de arquivos google drive
+from google_drive_downloader import GoogleDriveDownloader as gdd
+
 # Função para download do modelo
-def download_model():
-	gdd.download_file_from_google_drive(file_id='1e4h7kKj4o9X7ZJ4hZu1w6U3q3jK7h3YB',
+def download_model(): 
+	gdd.download_file_from_google_drive(file_id='1-3Zj0H1Jk7jx2Q2XsJcT0Z0rB7eOYv6h',
 										dest_path='./Covid19_CNN_Classifier.h5',
-										unzip=False)
-
-
+										unzip=False)	
+# Função para carregar o modelo
+def load_model():
+	model = tf.keras.models.load_model('Covid19_CNN_Classifier.h5')
+	return model
+	
 # Função para carregar o modelo
 
 # Função principal do programa  
@@ -105,7 +111,7 @@ def main():
 				X_Ray = img.reshape(1,200,200,1)
 
 				# Importação de modelo CNN pré-treinado 
-				model = tf.keras.models.load_model('/content/Covid19_CNN_Classifier.h5')
+				model = tf.keras.models.load_model('Covid19_CNN_Classifier.h5')
 
 				# Diagnóstico (Previsão = Classificação Binária)
 				Diagnóstico = model.predict_classes(X_Ray)

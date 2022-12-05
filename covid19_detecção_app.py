@@ -97,10 +97,11 @@ def main():
 				model = tf.keras.models.load_model('Covid19_CNN_Classifier.h5')
 
 				# Diagnóstico (Previsão = Classificação Binária)
-				Diagnosis = model.predict_classes(X_Ray)
-				Diagnosis_proba = model.predict(X_Ray)
-				probability_cov = Diagnosis_proba*100
-				probability_no_cov = (1-Diagnosis_proba)*100
+				diagnosis = model.predict_classes(X_Ray)
+				diagnosis_proba = model.predict(X_Ray)
+				probability_cov = diagnosis_proba*100
+				probability_no_cov = (1-diagnosis_proba)*100
+				
 				# Resultado
 				my_bar = st.sidebar.progress(0)
 

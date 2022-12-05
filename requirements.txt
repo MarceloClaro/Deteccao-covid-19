@@ -3,3 +3,4 @@ Pillow
 streamlit
 tensorflow
 opencv_python_headless
+googledrivedownloader
